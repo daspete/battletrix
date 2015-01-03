@@ -1,0 +1,18 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\objects\Tetrimino.cs">
+    <Files>
+      <File FileName="Assets\scripts\controller\GameController.cs" Line="21" Column="2" />
+      <File FileName="Assets\scripts\controller\MoveController.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\controller\BrickController.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\serializeables\settings\TetriminoSettings.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\serializeables\settings\BrickSettings.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\serializeables\settings\MoveSettings.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\objects\Tetrimino.cs" Line="10" Column="17" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
