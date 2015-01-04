@@ -3,13 +3,8 @@ using System.Collections;
 
 public class Brick : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
+	public void removeBrick(){
+		Destroy(gameObject);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }

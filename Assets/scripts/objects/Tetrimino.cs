@@ -121,6 +121,7 @@ public class Tetrimino : MonoBehaviour {
 				state=State.Falling;
 			}else{
 				state=State.Fixed;
+				game.soundSettings.playDrop();
 
 				foreach(Transform brick in transform){
 					game.field[Mathf.RoundToInt(brick.position.y), Mathf.RoundToInt(brick.position.x)]=brick.gameObject;
@@ -135,7 +136,8 @@ public class Tetrimino : MonoBehaviour {
 						int y=Mathf.CeilToInt(line);
 
 						for(int i=0; i < game.fieldSettings.fieldWidth; i++){
-							Destroy(game.field[y,i]);
+							game.destroyBrick(game.field[y,i]);
+							//Destroy(game.field[y,i]);
 							game.field[y,i]=null;
 						}
 					}
