@@ -35,42 +35,51 @@ public class TetriminoPreview : MonoBehaviour {
 	}
 
 	void createTetriminoPreview(){
-		int minX=0;
-		int minY=0;
-		int maxX=0;
-		int maxY=0;
+		float minX=0;
+		float minY=0;
+		float maxX=0;
+		float maxY=0;
 		int i=0;
 
-		int brickSize=28;
-		int full=brickSize*4;
+		float brickSize=28f;
+		float full=150f;
 
 		for(i=0; i < shapes.GetLength(2); i++){
 			brickPositions[i]=shapes[shapeIndex, rotationIndex, i];
 
 			if(brickPositions[i].x < minX){
-				minX=(int)brickPositions[i].x;
+				minX=(float)brickPositions[i].x;
 			}
 			if(brickPositions[i].y < minY){
-				minY=(int)brickPositions[i].y;
+				minY=(float)brickPositions[i].y;
 			}
 
 			if(brickPositions[i].x > maxX){
-				maxX=(int)brickPositions[i].x;
+				maxX=(float)brickPositions[i].x;
 			}
 			if(brickPositions[i].y > maxY){
-				maxY=(int)brickPositions[i].y;
+				maxY=(float)brickPositions[i].y;
 			}
 		}
 
-		int rangeX=maxX-minX;
-		int rangeY=maxY-minY;
+		float rangeX=maxX-minX+1;
+		float rangeY=maxY-minY+1;
+		
+		if(rangeY%2!=0 && rangeY > 1){
+			rangeY-=1.5f;
+		}
+		if(rangeY > 3){
+			rangeY-=4f;
+		}
 
 		rangeX*=brickSize;
 		rangeY*=brickSize;
 
-
+		float startX=-full/2-rangeX/2;
+		float startY=-full/2-rangeY/2;
+		
 		for(i=0; i < shapes.GetLength(2); i++){
-			Vector2 pos=new Vector2(rangeX-(full+rangeX), rangeY-(full+rangeY));
+			Vector2 pos=new Vector2(startX, startY);
 			pos+=brickPositions[i] * brickSize;
 
 			bricks[i]=(GameObject)Instantiate(game.brickSettings.brickPreviewFab, pos, Quaternion.identity);

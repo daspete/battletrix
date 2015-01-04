@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\scripts\controller\GameController.cs" />
+     <Compile Include="Assets\scripts\objects\Brick.cs" />
      <Compile Include="Assets\scripts\objects\BrickPreview.cs" />
      <Compile Include="Assets\scripts\objects\Tetrimino.cs" />
      <Compile Include="Assets\scripts\objects\TetriminoPreview.cs" />

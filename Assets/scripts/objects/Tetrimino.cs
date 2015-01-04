@@ -40,7 +40,7 @@ public class Tetrimino : MonoBehaviour {
 		switch(state){
 			case State.Spawning:
 				createTetrimino();
-				transform.position=new Vector3((int)(game.fieldSettings.fieldWidth/2), game.fieldSettings.fieldHeight-1, 0);
+				transform.position=new Vector3((int)(game.fieldSettings.fieldWidth/2), game.fieldSettings.fieldHeight-2, 0);
 
 				//foreach(Transform brick in transform){
 					//TODO:: GAME OVER
@@ -129,7 +129,7 @@ public class Tetrimino : MonoBehaviour {
 				ArrayList lines=findLines();
 
 				if(lines.Count > 0){
-					game.uiSettings.addPoints(lines.Count);
+					game.addPoints(lines.Count);
 					
 					foreach(int line in lines){
 						int y=Mathf.CeilToInt(line);

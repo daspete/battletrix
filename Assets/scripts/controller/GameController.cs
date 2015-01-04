@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour {
 	public CameraSettings cameraSettings;
 	public UISettings uiSettings;
 
+	public int linesPerLevel=10;
+
 	public GameObject[,] field;
 
 	GameObject tetrimino;
@@ -23,6 +25,8 @@ public class GameController : MonoBehaviour {
 	int nextTetriminoRotationIndex;
 
 	int level=1;
+	int points=0;
+	int lines=0;
 
 	void Awake(){
 		instance=this;
@@ -41,6 +45,24 @@ public class GameController : MonoBehaviour {
 		level=_level;
 
 		uiSettings.setLevel(level);
+
+		moveSettings.fallCooldown*=0.9f;
+	}
+
+	public void setLines(int _lines){
+		lines+=_lines;
+
+		uiSettings.setLines(lines);
+	}
+
+	public void addPoints(int _points){
+		setLines(_points);
+		points+=_points*_points;
+		uiSettings.setPoints(points);
+
+		if(lines > level*linesPerLevel){
+			setLevel(level+1);
+		}
 	}
 
 	int getRandomTetrimino(){
