@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UISettings {
 
 	public GameObject UI;
+	public GameObject preview;
 
 	public Text levelValue;
 	public Text linesValue;
@@ -16,49 +17,30 @@ public class UISettings {
 
 	public GameObject bonusIndicator;
 
+	public GameObject audioOn;
+	public GameObject audioOff;
 
-	public void initialize(){
-		iTween.FadeTo(bonusIndicator, iTween.Hash(
-			"alpha", 0,
-			"time", 0.001
-		));
 
-		iTween.ScaleTo(bonusIndicator, iTween.Hash(
-			"scale", Vector3.zero,
-			"time", 0.001
-		));
+	public void initialize(bool _muted){
+		toggleMute(_muted);
 	}
 
 	public void showBonus(Hashtable settings){
 		bonusHeadline.text=(settings["headline"]).ToString();
 		bonusText.text=(settings["text"]).ToString();
 
-		iTween.FadeTo(bonusIndicator, iTween.Hash(
-			"alpha", 1,
-			"time", 0.3f
-		));
-
 		iTween.ScaleTo(bonusIndicator, iTween.Hash(
 			"scale", new Vector3(1,1,1),
-			"time", 0.3f,
-			"easetype", "spring"
-		));
-
-		iTween.FadeTo(bonusIndicator, iTween.Hash(
-			"alpha", 0,
-			"time", 0.3f,
-			"delay", 1f
+			"time", 0.4f,
+			"easetype", "easeInSine"
 		));
 
 		iTween.ScaleTo(bonusIndicator, iTween.Hash(
 			"scale", Vector3.zero,
-			"time", 0.3f,
-			"easetype", "spring",
-			"delay", 1f
+			"time", 0.4f,
+			"easetype", "easeOutSine",
+			"delay", 0.9f
 		));
-
-
-
 	}
 
 	public void setPoints(int val){
@@ -71,6 +53,16 @@ public class UISettings {
 
 	public void setLines(int lines){
 		linesValue.text=lines.ToString();
+	}
+
+	public void toggleMute(bool mute){
+		if(mute){
+			audioOn.SetActive(true);
+			audioOff.SetActive(false);
+		}else{
+			audioOn.SetActive(false);
+			audioOff.SetActive(true);
+		}
 	}
 
 }

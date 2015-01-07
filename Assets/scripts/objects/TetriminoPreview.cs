@@ -83,7 +83,7 @@ public class TetriminoPreview : MonoBehaviour {
 			pos+=brickPositions[i] * brickSize;
 
 			bricks[i]=(GameObject)Instantiate(game.brickSettings.brickPreviewFab, pos, Quaternion.identity);
-			bricks[i].transform.SetParent(game.uiSettings.UI.transform, false);
+			bricks[i].transform.SetParent(game.uiSettings.preview.transform, false);
 			bricks[i].GetComponent<Image>().color=game.tetriminoSettings.tetriminoColors[shapeIndex];
 		}
 	}

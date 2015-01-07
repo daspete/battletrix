@@ -26,6 +26,8 @@ public class Tetrimino : MonoBehaviour {
 
 	float nextFall=0;
 
+
+
 	void Awake(){
 		instance=this;
 	}
@@ -42,9 +44,12 @@ public class Tetrimino : MonoBehaviour {
 				createTetrimino();
 				transform.position=new Vector3((int)(game.fieldSettings.fieldWidth/2), game.fieldSettings.fieldHeight-2, 0);
 
-				//foreach(Transform brick in transform){
-					//TODO:: GAME OVER
-				//}
+				foreach(Transform brick in transform){
+					if(game.field[(int)brick.position.y, (int)brick.position.x] != null){
+						game.gameIsOver();
+						return;
+					}
+				}
 
 				state=State.Falling;
 			break;
@@ -52,6 +57,8 @@ public class Tetrimino : MonoBehaviour {
 	}
 
 	void Update(){
+		if(game.gameOver) return;
+
 		if(state != State.Fixed && state != State.Preview && state != State.Spawning){
 			if(state != State.Landed && Input.GetAxis("Vertical") < 0){
 				StartCoroutine(fall());
@@ -80,12 +87,11 @@ public class Tetrimino : MonoBehaviour {
 
 
 	IEnumerator move(){
-		isMoving=true;
-
 		float moved=0f;
 		float direction=Input.GetAxis("Horizontal");
 
 		if((CanMoveRight && direction > 0) || (CanMoveLeft && direction < 0)){
+			isMoving=true;
 			while(moved <= 1.0f){
 				float moveStep=Mathf.Min(game.moveSettings.moveSpeed * Time.deltaTime, 1.1f - moved);
 
@@ -137,7 +143,6 @@ public class Tetrimino : MonoBehaviour {
 
 						for(int i=0; i < game.fieldSettings.fieldWidth; i++){
 							game.destroyBrick(game.field[y,i]);
-							//Destroy(game.field[y,i]);
 							game.field[y,i]=null;
 						}
 					}
@@ -173,6 +178,7 @@ public class Tetrimino : MonoBehaviour {
 
 		rotationIndex=(rotationIndex+1)%shapes.GetLength(2);
 		createTetrimino();
+
 		yield return 0;
 	}
 

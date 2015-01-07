@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Newtonsoft.Json;
+
+public class Session{
+	public string sessionID { get; set; }
+	public int muted { get; set; }
+}
 
 public class GameController : MonoBehaviour {
 
@@ -29,25 +35,44 @@ public class GameController : MonoBehaviour {
 	int points=0;
 	int lines=0;
 
+	Session session;
+
+	public bool gameOver=false;
+
 	void Awake(){
 		instance=this;
+
+		cameraSettings.mainCamera.aspect=16f/9f;
 
 		field=new GameObject[fieldSettings.fieldHeight, fieldSettings.fieldWidth];
 	}
 
 	void Start(){
-		initialize();
-		
+		Application.ExternalCall("window.application.createSession");
+	}
 
+	public void setSession(string _json){
+		session=JsonConvert.DeserializeObject<Session>(_json);
+
+		Application.ExternalCall("console.log", session.muted);
+
+		initialize();
+	}
+
+	void initialize(){
+		bool m=(session.muted == 0)?false:true;
+
+		soundSettings.initialize(m);
+		uiSettings.initialize(m);
+
+		run();
+	}
+
+	void run(){
 		nextTetriminoIndex=getRandomTetrimino();
 		nextTetriminoRotationIndex=getRandomTetriminoRotation();
 
 		createNextTetrimino();
-	}
-
-	void initialize(){
-		uiSettings.initialize();
-		soundSettings.playMusic();
 	}
 
 	public void setLevel(int _level){
@@ -81,9 +106,6 @@ public class GameController : MonoBehaviour {
 				"text", "YOU MADE A TETRIS"
 			));	
 		}
-		
-
-		
 	}
 
 	public void addPoints(int _points){
@@ -104,12 +126,22 @@ public class GameController : MonoBehaviour {
 		float randomRotation=Random.Range(90f, 270f);
 		Vector3 randomRotationVector=new Vector3(randomRotation, randomRotation, randomRotation);
 
+		Vector3 movePos=brick.transform.position;
+		movePos+=Vector3.back;
+
+		iTween.MoveTo(brick, iTween.Hash(
+			"position", movePos,
+			"time", 0.5f,
+			"easetype", "easeInOutSine"
+		));
+
 		iTween.FadeTo(brick, iTween.Hash(
 			"alpha", 0,
 			"time", 0.6f,
+			"delay", 1f,
 			"easetype", "easeOutSine"
 		));
-		iTween.RotateTo(brick, iTween.Hash(
+		/*iTween.RotateTo(brick, iTween.Hash(
 			"rotation", randomRotationVector,
 			"time", 0.6f,
 			"easetype", "easeOutSine"
@@ -120,9 +152,33 @@ public class GameController : MonoBehaviour {
 			"delay", Random.Range(0f,0.2f),
 			"oncomplete", "removeBrick",
 			"easetype", "easeOutSine"
-		));
+		));*/
+	}
 
-		
+	public void gameIsOver(){
+		gameOver=true;
+
+		GameObject[] bricks=GameObject.FindGameObjectsWithTag("Brick");
+
+		foreach(GameObject brick in bricks){
+			destroyBrick(brick);
+		}
+
+		soundSettings.fadeOutMusic();
+		soundSettings.playGameOver();
+
+		StartCoroutine(restartGame());
+	}
+
+	public void toggleAudio(){
+		soundSettings.toggleVolume();
+		uiSettings.toggleMute(soundSettings.muted);
+	}
+
+	IEnumerator restartGame(){
+		yield return new WaitForSeconds(2f);
+
+		Application.LoadLevel("game");
 	}
 
 	int getRandomTetrimino(){
